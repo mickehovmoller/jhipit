@@ -5,9 +5,10 @@ public class Issues {
 	public String id;
 	public String self;
 	public String key;
+	public Changelog changelog;
 
 	public String toString() {
-		return expand + "  " + id + "  " + self + "  " + key;
+		return expand + "  " + id + "  " + self + "  " + key + changelog.toString();
 	}
 
 }

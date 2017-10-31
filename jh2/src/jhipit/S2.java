@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,8 +18,9 @@ public class S2 {
 		// TODO Auto-generated method stub
 		System.out.println("New world");
 		S2 foo = new S2();
-		foo.parse();
-//		foo.getJIRAs();
+		foo.parseJQL();
+//		foo.parseIssue();
+		// foo.getJIRAs();
 	}
 
 	private String getFromFile() {
@@ -38,20 +42,28 @@ public class S2 {
 		return s;
 	}
 
-	private void parse() {
+	private void parseJQL() {
 		System.out.println("In");
-//		String str = getFromFile();
-		String str = getJIRAs();
+		// String str = getFromFile();
+		String url = "https://jira.cinnober.com/rest/api/2/search?jql=project%20%3D%20BKL&expand=changelog";
+		String str = getJIRAs(url);
 		Gson gson = new GsonBuilder().create();
 		JIRAResults j = gson.fromJson(str, JIRAResults.class);
 		System.out.println(j);
 	}
 
-	private String getJIRAs() {
+	private void parseIssue() {
+		String url = "https://jira.cinnober.com/rest/api/2/issue/244606/changelog";
+		String str = getJIRAs(url);
+		Gson gson = new GsonBuilder().create();
+		Issue i = gson.fromJson(str, Issue.class);
+		System.out.println(i);
+	}
+
+	private String getJIRAs(String url) {
 		String username = "micke.hovmoller";
-		String password = "***ChangeHERE***";
-		String url = "https://jira.cinnober.com/rest/api/2/search?jql=project%20%3D%20DGCXSUP";
-		String[] command = {"curl", "-H", "Accept:application/json", "-u", username+":"+password , url};
+		String password = getPwd();
+		String[] command = { "curl", "-H", "Accept:application/json", "-u", username + ":" + password, url };
 		ProcessBuilder process = new ProcessBuilder(command);
 		Process p;
 		try {
@@ -73,4 +85,18 @@ public class S2 {
 		}
 		return null;
 	}
+
+	private String getPwd() {
+		try {
+			File f = new File("c:\\jhres\\pwd.txt");
+			BufferedReader b = new BufferedReader(new FileReader(f));
+			String pwd = b.readLine();
+			b.close();
+			return pwd;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }
