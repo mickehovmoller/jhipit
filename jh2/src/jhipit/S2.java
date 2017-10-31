@@ -45,7 +45,8 @@ public class S2 {
 	private void parseJQL() {
 		System.out.println("In");
 		// String str = getFromFile();
-		String url = "https://jira.cinnober.com/rest/api/2/search?jql=project%20%3D%20BKL&expand=changelog";
+//		String url = "https://jira.cinnober.com/rest/api/2/search?jql=project%20%3D%20BKL&expand=changelog";
+		String url = "https://jira.cinnober.com/rest/api/2/search?jql=issue%20%3D%20BKL-271&expand=changelog";
 		String str = getJIRAs(url);
 		Gson gson = new GsonBuilder().create();
 		JIRAResults j = gson.fromJson(str, JIRAResults.class);

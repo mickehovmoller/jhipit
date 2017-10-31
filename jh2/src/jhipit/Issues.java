@@ -8,7 +8,7 @@ public class Issues {
 	public Changelog changelog;
 
 	public String toString() {
-		return expand + "  " + id + "  " + self + "  " + key + changelog.toString();
+		return id + "  " + self + "  " + key + changelog.toString();
 	}
 
 }
