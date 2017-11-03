@@ -11,5 +11,13 @@ public class Items {
 		} else
 			return "";
 	}
+	
+	public String getRelevantPreviousState() {
+		if (field.equals("status")) {
+			return fromString;
+		} else
+			return "";
+	}
+	
 
 }

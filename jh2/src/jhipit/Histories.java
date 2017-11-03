@@ -12,8 +12,23 @@ public class Histories {
 	public String toString() {
 //		OffsetDateTime c = OffsetDateTime.parse(created, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSx"));
 //		Duration d2 = Duration.between(c, OffsetDateTime.now());
-		return " id: " + id + " created: " + created + " " + items[0].toString();
+		String s = "";
+		for (Items i: items) {
+			if (!i.toString().equals("")) {
+				s += i.toString();
+			}
+		}
+		return " id: " + id + " created: " + created + " " + s;
+	}
+	
+	public String getRelevantPreviousState()
+	{
+		for (Items i: items) {
+			if (!i.toString().equals("")) {
+				return i.getRelevantPreviousState();
+			}
+		}
+		return "";
 	}
 
-	
 }

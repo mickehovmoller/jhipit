@@ -1,5 +1,7 @@
 package jhipit;
 
+import java.io.PrintWriter;
+
 public class Issues {
 	public String expand;
 	public String id;
@@ -9,6 +11,11 @@ public class Issues {
 
 	public String toString() {
 		return id + "  " + self + "  " + key + changelog.toString();
+	}
+
+	public void printToFile(PrintWriter outputFile) {
+		changelog.printToFile(outputFile, key);
+		
 	}
 
 }

@@ -5,9 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.RandomAccessFile;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,47 +15,41 @@ public class S2 {
 		// TODO Auto-generated method stub
 		System.out.println("New world");
 		S2 foo = new S2();
-		foo.parseJQL();
-//		foo.parseIssue();
+		
+		String url;
+		if (args.length == 0) {
+			// No arguments passed? For now, use this as a convenience. For real, return with proper error message
+			url = "https://jira.cinnober.com/rest/api/2/search?jql=project%20%3D%20%22DGCX%20Support%22%20and%20status%20%3D%20Closed%20and%20updated%20%3E%202017-09-01&expand=changelog";
+		} else {
+			url = getRESTURLFromHTTPURL(args[0]);
+		}
+		foo.parseJQL(url);
+		// foo.parseIssue();
 		// foo.getJIRAs();
 	}
 
-	private String getFromFile() {
-		String s;
-		try {
-
-			File f = new File("c:\\jhres\\dgcxjson_cleaned.txt");
-			BufferedReader b = new BufferedReader(new FileReader(f));
-			return b.readLine();
-			// String readLine = "";
-			// while ((readLine = b.readLine()) != null) {
-			// System.out.println(readLine);
-			// }
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		s = "{\"album_id\":\"7596\",\"album_title\":\"Tjoho\"}";
-		return s;
+	private static String getRESTURLFromHTTPURL(String url) {
+		String urlToUse = "https://jira.cinnober.com/rest/api/2/search?";
+		int startOfJQL =url.indexOf("jql");
+		urlToUse += url.substring(startOfJQL);
+		urlToUse += "&expand=changelog";
+		System.out.println(urlToUse);
+		return urlToUse;
 	}
 
-	private void parseJQL() {
+	private void parseJQL(String url) {
 		System.out.println("In");
 		// String str = getFromFile();
-//		String url = "https://jira.cinnober.com/rest/api/2/search?jql=project%20%3D%20BKL&expand=changelog";
-		String url = "https://jira.cinnober.com/rest/api/2/search?jql=issue%20%3D%20BKL-271&expand=changelog";
+		// String url =
+		// "https://jira.cinnober.com/rest/api/2/search?jql=project%20%3D%20BKL&expand=changelog";
+		// String url =
+		// "https://jira.cinnober.com/rest/api/2/search?jql=issue%20%3D%20BKL-271&expand=changelog";
+//		String url = "https://jira.cinnober.com/rest/api/2/search?jql=project%20%3D%20%22DGCX%20Support%22%20and%20status%20%3D%20Closed%20and%20updated%20%3E%202017-09-01&expand=changelog";
 		String str = getJIRAs(url);
 		Gson gson = new GsonBuilder().create();
 		JIRAResults j = gson.fromJson(str, JIRAResults.class);
-		System.out.println(j);
-	}
-
-	private void parseIssue() {
-		String url = "https://jira.cinnober.com/rest/api/2/issue/244606/changelog";
-		String str = getJIRAs(url);
-		Gson gson = new GsonBuilder().create();
-		Issue i = gson.fromJson(str, Issue.class);
-		System.out.println(i);
+		j.printToFile("c:\\jhres\\output.txt");
+		// System.out.println(j);
 	}
 
 	private String getJIRAs(String url) {

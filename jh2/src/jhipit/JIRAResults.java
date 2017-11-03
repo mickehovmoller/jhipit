@@ -1,5 +1,8 @@
 package jhipit;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
 public class JIRAResults {
 
 	public String expand;
@@ -13,6 +16,23 @@ public class JIRAResults {
 			System.out.println(i.toString());
 		}
 		return expand + "  " + startAt + "  " + maxResults + "  " + total;
+	}
+
+	public void printToFile(String filename) {
+		// TODO Auto-generated method stub
+		PrintWriter outputFile;
+		try {
+			outputFile = new PrintWriter(filename);
+			outputFile.println("Key;Link;Status;Time spent");
+			for (Issues i : issues) {
+				i.printToFile(outputFile);
+			}
+			outputFile.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
