@@ -31,4 +31,15 @@ public class Histories {
 		return "";
 	}
 
+	// Returns true if there is a state change
+	public boolean isStausChange()
+	{
+		for (Items i: items) {
+			if (!i.toString().equals("")) {
+				return i.isStatusChange();
+			}
+		}
+		return false;
+	}
+
 }

@@ -1,12 +1,14 @@
 package jhipit;
 
 import java.io.PrintWriter;
+import java.time.OffsetDateTime;
 
 public class Issues {
 	public String expand;
 	public String id;
 	public String self;
 	public String key;
+	public Fields fields;
 	public Changelog changelog;
 
 	public String toString() {
@@ -14,7 +16,8 @@ public class Issues {
 	}
 
 	public void printToFile(PrintWriter outputFile) {
-		changelog.printToFile(outputFile, key);
+		OffsetDateTime createdDateTime = fields.getCreatedDateTime();		
+		changelog.printToFile(outputFile, key, createdDateTime);
 		
 	}
 

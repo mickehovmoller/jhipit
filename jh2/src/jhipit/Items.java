@@ -18,6 +18,11 @@ public class Items {
 		} else
 			return "";
 	}
+
+	
+	public boolean isStatusChange() {
+		return field.equals("status");
+	}
 	
 
 }
