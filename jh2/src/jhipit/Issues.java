@@ -16,8 +16,9 @@ public class Issues {
 	}
 
 	public void printToFile(PrintWriter outputFile) {
-		OffsetDateTime createdDateTime = fields.getCreatedDateTime();		
-		changelog.printToFile(outputFile, key, createdDateTime);
+		OffsetDateTime createdDateTime = fields.getCreatedDateTime();
+		String resolution = fields.getResolution();
+		changelog.printToFile(outputFile, key, createdDateTime, resolution);
 		
 	}
 

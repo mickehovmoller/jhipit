@@ -23,7 +23,7 @@ public class JIRAResults {
 		PrintWriter outputFile;
 		try {
 			outputFile = new PrintWriter(filename);
-			outputFile.println("Key;Link;Status;Time spent");
+			outputFile.println("Key;Link;Status;Time spent;Resolution");
 			for (Issues i : issues) {
 				i.printToFile(outputFile);
 			}

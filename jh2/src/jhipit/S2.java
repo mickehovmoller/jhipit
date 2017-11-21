@@ -13,13 +13,13 @@ public class S2 {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println("New world");
+		System.out.println("Starting");
 		S2 foo = new S2();
 		
 		String url;
 		if (args.length == 0) {
 			// No arguments passed? For now, use this as a convenience. For real, return with proper error message
-			url = "https://jira.cinnober.com/rest/api/2/search?jql=project%20%3D%20%22DGCX%20Support%22%20and%20status%20%3D%20Closed%20and%20updated%20%3E%202017-09-01&expand=changelog";
+			url = "https://jira.cinnober.com/rest/api/2/search?jql=project%20%3D%20%22TRADExpress%20Development%22%20and%20status%20%3DClosed%20and%20updated%20%3E%3D%202017-01-01%20and%20type%20%3D%20Bug%20and%20key%20%3D%20tedev-14854&expand=changelog";
 		} else {
 			url = getRESTURLFromHTTPURL(args[0]);
 		}

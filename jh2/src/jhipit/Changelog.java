@@ -12,7 +12,7 @@ public class Changelog {
 	public String total;
 	public Histories[] histories;
 
-	public void printToFile(PrintWriter outputFile, String key, OffsetDateTime createdDateTime) {
+	public void printToFile(PrintWriter outputFile, String key, OffsetDateTime createdDateTime, String resolution) {
 		OffsetDateTime previousDateTime = createdDateTime;
 		if (histories != null) {
 			for (Histories h : histories) {
@@ -28,6 +28,7 @@ public class Changelog {
 					long durMinutes = (durInSeconds - durHours * 3600) / 60;
 					long durSeconds = durInSeconds % 60;
 					s += durHours + ":" + durMinutes + ":" + durSeconds;
+					s += ";" + resolution;
 					outputFile.println(s);
 					previousDateTime = currentDateTime;
 				}
