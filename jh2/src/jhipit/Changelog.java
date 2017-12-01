@@ -1,9 +1,9 @@
 package jhipit;
 
-import java.io.PrintWriter;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 public class Changelog {
 
@@ -12,28 +12,39 @@ public class Changelog {
 	public String total;
 	public Histories[] histories;
 
-	public void printToFile(PrintWriter outputFile, String key, OffsetDateTime createdDateTime, String resolution) {
+  // Iterates over the changelog. Adds new items to the hashmap, and updates already existing ones
+	public void iterateChangelog(Map<JiraStatusTuple, JiraWithStatus> jiraMap, String key,
+			OffsetDateTime createdDateTime, String resolution, String severity, String lastUpdated) {
+
 		OffsetDateTime previousDateTime = createdDateTime;
+
 		if (histories != null) {
 			for (Histories h : histories) {
 				if (h.isStausChange()) {
-					String s = key + ";https://jira.cinnober.com/browse/" + key + ";" + h.getRelevantPreviousState()
-							+ ";";
+
+					// Get the duration of this status change
 					OffsetDateTime currentDateTime = OffsetDateTime.parse(h.created,
 							DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSx"));
 					Duration dur = Duration.between(previousDateTime, currentDateTime);
-					// TODO: Create and use a proper formatter
-					long durInSeconds = dur.getSeconds();
-					long durHours = durInSeconds / 3600;
-					long durMinutes = (durInSeconds - durHours * 3600) / 60;
-					long durSeconds = durInSeconds % 60;
-					s += durHours + ":" + durMinutes + ":" + durSeconds;
-					s += ";" + resolution;
-					outputFile.println(s);
+
+					// Check if this combination is already in the map
+					JiraStatusTuple newTuple = new JiraStatusTuple(key, h.getRelevantPreviousState());
+
+					JiraWithStatus j = jiraMap.get(newTuple);
+
+					if (j == null) {
+						// No, so add it
+						JiraWithStatus result = new JiraWithStatus(key, "https://jira.cinnober.com/browse/" + key,
+								h.getRelevantPreviousState(), dur, resolution, severity, lastUpdated);
+						jiraMap.put(newTuple, result);
+					} else {
+						// Yes, so just add the time
+						j.addTimeSpent(dur);
+					}
 					previousDateTime = currentDateTime;
 				}
 			}
+
 		}
 	}
-
 }

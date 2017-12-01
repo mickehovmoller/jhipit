@@ -7,10 +7,8 @@ public class Fields {
 	public String created;
 	public String description;
 	public Resolution resolution;
-
-//	public String toString() {
-//		return created + "  " + description;
-//	}
+	public Priority priority;
+	public String updated;
 
 	public OffsetDateTime getCreatedDateTime() {
 		OffsetDateTime currentDateTime = OffsetDateTime.parse(created,
@@ -18,9 +16,20 @@ public class Fields {
 		return currentDateTime;
 	}
 	
+	public OffsetDateTime getUpdatedDateTime() {
+		OffsetDateTime updatedDateTime = OffsetDateTime.parse(updated,
+				DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSx"));
+		return updatedDateTime;
+	}
+	
 	public String getResolution() {
 		if (resolution==null) return "";
 		return resolution.toString();
+	}
+
+	public String getPriority() {
+		if (priority==null) return "";
+		return priority.toString();
 	}
 
 }
